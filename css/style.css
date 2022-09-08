@@ -7,3 +7,43 @@
   flex-wrap: wrap;
   flex: auto;
   align-items: center; }
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas: "banner banner banner" "img1 img2 img3" "text1 text2 tex3" "banner2 banner2 banner2"; }
+
+.banner {
+  grid-area: banner; }
+
+.img1 {
+  grid-area: img1; }
+
+.img2 {
+  grid-area: img2; }
+
+.img3 {
+  grid-area: img3; }
+
+.text1 {
+  grid-area: text1; }
+
+.text2 {
+  grid-area: text2; }
+
+.tex3 {
+  grid-area: tex3; }
+
+.banner2 {
+  grid-area: banner2; }
+
+.img-banner {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  margin: 0px;
+  padding: 0px;
+  justify-items: flex-start; }
