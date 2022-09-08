@@ -1,17 +1,12 @@
 {
-  "dependencies": {
-    "node-sass": "^7.0.1",
-    "nodemon": "^2.0.19"
-  },
   "name": "proyecto-final",
-  "description": "//COMO EMPEZAR A COMPILAR SASS//",
   "version": "1.0.0",
+  "description": "//COMO EMPEZAR A COMPILAR SASS//",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-css": "node-sass --include-path scss scss/main.scss css/style.css",
-"watch-css": "nodemon -e scss -x \"npm run build-css\""
+    "watch-css": "nodemon -e scss -x \"npm run build-css\""
   },
   "repository": {
     "type": "git",
@@ -22,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/FedeVts/proyecto-final/issues"
   },
-  "homepage": "https://github.com/FedeVts/proyecto-final#readme"
+  "homepage": "https://github.com/FedeVts/proyecto-final#readme",
+  "dependencies": {
+    "node-sass": "^7.0.3",
+    "nodemon": "^2.0.19"
+  },
+  "devDependencies": {}
 }

@@ -8,8 +8,7 @@
     a. A continuación de && exit 1" colocar una , presionar enter
     y pegar el siguiente texto:
 
-"build-css": "node-sass --include-path scss scss/main.scss css/style.css",
-"watch-css": "nodemon -e scss -x \"npm run build-css\""
+
 
 3. Crear las carpetas con sus respectivos archivos
     a. scss/main.scss
