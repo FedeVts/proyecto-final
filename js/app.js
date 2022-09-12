@@ -4,33 +4,29 @@ const listaProductos = [
   {
     nombre: "Flandria Vainilla",
     descripcion: "Fino tabaco de origen Belga saborizado vainilla",
-    precio: 400,
+    precio: 890,
     imagen: "realTABACO FLANDRIA VAINILLA 30gr.jpeg",
   },
   {
     nombre: "Flandria Virginia",
     descripcion: "Fino tabaco de origen Belga del tipo Virginia Blend",
-    precio: 400,
+    precio: 700,
     imagen: "2flandria-silver-tabaco-precios.jpg",
   },
   {
     nombre: "Cerrito Vainilla",
     descripcion: "Tabaco importado de Chile sabor vainilla",
-    precio: 400,
+    precio: 600,
     imagen: "4tabaco-cerrito-vainilla-venta-768x768.jpg.webp",
   },
   {
     nombre: "Achalay Virginia",
     descripcion: "Fino tabaco importado de variedad Virginia blend",
-    precio: 400,
+    precio:750,
     imagen: "10achalay-tabaco-virginia.webp",
   },
-  {
-    nombre: "Achalay Virginia",
-    descripcion: "Fino tabaco importado de variedad Virginia blend",
-    precio: 400,
-    imagen: "10achalay-tabaco-virginia.webp",
-  },
+  
+  
 ];
 
 // const botonCarrito = document.getElementsByClassName("botonCarrito");
@@ -45,21 +41,23 @@ document.addEventListener("DOMContentLoaded", crearCards);
 
 function crearCards() {
   let contenedor = document.getElementById("productos");
-  listaProductos.forEach((producto) => {
+  for (let p of listaProductos) {
     let card = document.createElement("div");
     
     card.innerHTML = `
     <img
-    src="../assets/img-productos/${producto.imagen}"
+    src="../assets/img-productos/${p.imagen}"
     class="card-img-top"
     alt="..."
     />
     <div class="card-body">
     <p class="card-text">
-    <h5 class="d-block text-center">${producto.nombre}</h5>
+    <h5 class="d-block text-center">${p.nombre}</h5>
     <br>
-    ${producto.descripcion}
+    ${p.descripcion}
     </p>
+    <span class="d-block text-center"><strong>${p.precio}</strong></span>
+    <br>
     <button name="botonCarrito" type="button" class="btn btn-primary btn-lg botonCarrito">
     Agregar a Carrito
     </button>
@@ -73,35 +71,43 @@ function crearCards() {
     for( let boton of btn_compra){
       console.log(boton);
     
-      boton.addEventListener("click" , agregarCarrito);
-      
-      
+      boton.addEventListener("click" , agregarCarrito)
+       
     }
     contenedor.append(card);
-  });
+  };
 }
 
 function agregarCarrito(e){
-carrito.pu
+let marcador = e.target.parentNode;
+let nombreProducto = marcador.querySelector('h5').textContent
+let precioProducto = parseInt(marcador.querySelector('span').textContent)
+let fotoProducto = marcador.parentNode.querySelector('img').src
+let producto = {
+  nombre: nombreProducto,
+  precio: precioProducto,
+  imagen: fotoProducto,
+  
+}
+carrito.push(producto)
+console.log(carrito);
+
+reenderizarCarrito()
+
+
 }
 
 
 function reenderizarCarrito(e){
-  let container = document.getElementById('container')
-  container.innerHTML = `<div class="row">
-  <!-- Elementos generados a partir del JSON -->
-  <main id="items" class="col-sm-8 row"></main>
-  <!-- Carrito -->
-  <aside class="col-sm-4">
-    <h2>Carrito</h2>
-    <!-- Elementos del carrito -->
-    <ul id="carrito" class="list-group"></ul>
-    <hr>
-    <!-- Precio total -->
-    <p class="text-right">Total: <span id="total"></span>&dollar;</p>
-    <button id="boton-vaciar" class="btn btn-danger">Vaciar</button>
-  </aside>
-  </div>`
+  let container = document.getElementById('carrito')
+  let card = document.createElement('div')
+  for(let p of carrito){
+card.classList.add('carrito-container');
+    card.innerHTML = `
+    <img class="card-img-top" src="${p.imagen}"></img>
+    <li>${p.nombre}</li>`
+    container.append(card);
+  }
 }
 
 
@@ -112,7 +118,7 @@ const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
 const DOMbotonVaciar = document.querySelector('#boton-vaciar');
 
-
+let storage = localStorage.setItem('listaProductos', JSON.stringify(carrito))
 
 
 

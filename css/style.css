@@ -9,8 +9,8 @@
   width: 100%;
   height: 4em; }
   .carrito-container img {
-    width: 4em;
-    height: 4em; }
+    width: 6em;
+    height: 6em; }
 
 .carrito-container {
   display: flex;
@@ -20,13 +20,5 @@
   width: 100%;
   height: 4em; }
   .carrito-container img {
-    width: 4em;
-    height: 4em; }
-
-.carrito-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  height: 4em; }
+    width: 6em;
+    height: 6em; }
