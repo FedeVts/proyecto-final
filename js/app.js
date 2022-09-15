@@ -116,7 +116,8 @@ const divisa = '$';
 const DOMitems = document.querySelector('#items');
 const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
-let DOMbotonVaciar = document.querySelector('#boton-vaciar');
+let DOMbotonVaciar = document.getElementById('boton-vaciar');
+
 
 let storage = localStorage.setItem('listaProductos', JSON.stringify(carrito))
 
