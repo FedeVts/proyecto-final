@@ -1,4 +1,4 @@
-const carrito = []
+let carrito = []
 
 const listaProductos = [
   {
@@ -92,13 +92,13 @@ let producto = {
 carrito.push(producto)
 console.log(carrito);
 
-reenderizarCarrito()
+renderizarCarrito()
 
 
 }
 
 
-function reenderizarCarrito(e){
+function renderizarCarrito(e){
   let container = document.getElementById('carrito')
   let card = document.createElement('div')
   for(let p of carrito){
@@ -116,9 +116,20 @@ const divisa = '$';
 const DOMitems = document.querySelector('#items');
 const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
-const DOMbotonVaciar = document.querySelector('#boton-vaciar');
+let DOMbotonVaciar = document.querySelector('#boton-vaciar');
 
 let storage = localStorage.setItem('listaProductos', JSON.stringify(carrito))
+
+
+function vaciarCarrito(){
+  carrito = [];
+  renderizarCarrito();
+}
+DOMbotonVaciar.addEventListener('click', vaciarCarrito);
+
+
+// renderizarProductos();
+renderizarCarrito();
 
 
 
