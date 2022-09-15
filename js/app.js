@@ -68,13 +68,13 @@ function crearCards() {
     
     let btn_compra = document.getElementsByClassName('botonCarrito');
     console.log(btn_compra);
+    contenedor.append(card);
     for( let boton of btn_compra){
       console.log(boton);
     
       boton.addEventListener("click" , agregarCarrito)
        
     }
-    contenedor.append(card);
   };
 }
 
@@ -87,8 +87,11 @@ let producto = {
   nombre: nombreProducto,
   precio: precioProducto,
   imagen: fotoProducto,
+
   
 }
+
+
 carrito.push(producto)
 console.log(carrito);
 
@@ -105,9 +108,19 @@ function renderizarCarrito(e){
 card.classList.add('carrito-container');
     card.innerHTML = `
     <img class="card-img-top" src="${p.imagen}"></img>
-    <li>${p.nombre}</li>`
+    <li>${p.nombre}</li>
+    <li>Precio: $<p class="precio-producto">${p.precio}</p></li>`
     container.append(card);
+    let total = document.getElementById("total");
+    let precios = document.getElementsByClassName("precio-producto");
+    let sumaTotal = 0;
+
+    for(let precio of precios){
+      sumaTotal += parseInt(precio.innerText);
+      total.innerHTML = `${sumaTotal}`;
+    }
   }
+  
 }
 
 
@@ -116,21 +129,25 @@ const divisa = '$';
 const DOMitems = document.querySelector('#items');
 const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
-let DOMbotonVaciar = document.getElementById('boton-vaciar');
-
+let DOMbotonVaciar = document.querySelector('#boton-vaciar');
+console.log(DOMbotonVaciar);
 
 let storage = localStorage.setItem('listaProductos', JSON.stringify(carrito))
 
 
-function vaciarCarrito(){
-  carrito = [];
-  renderizarCarrito();
-}
-DOMbotonVaciar.addEventListener('click', vaciarCarrito);
 
 
 // renderizarProductos();
 renderizarCarrito();
+DOMbotonVaciar.addEventListener('click', vaciarCarrito);
+
+function vaciarCarrito(){
+carrito = [];
+let container = document.getElementById('carrito')
+container.innerHTML = ""
+  renderizarCarrito();
+  
+}
 
 
 
