@@ -1,31 +1,52 @@
+
+
+
 let carrito = []
+
 
 const listaProductos = [
   {
+    id: 01,
     nombre: "Flandria Vainilla",
     descripcion: "Fino tabaco de origen Belga saborizado vainilla",
     precio: 890,
     imagen: "realTABACO FLANDRIA VAINILLA 30gr.jpeg",
   },
   {
+    id: 02,
     nombre: "Flandria Virginia",
     descripcion: "Fino tabaco de origen Belga del tipo Virginia Blend",
     precio: 700,
     imagen: "2flandria-silver-tabaco-precios.jpg",
   },
   {
+    id: 03,
     nombre: "Cerrito Vainilla",
     descripcion: "Tabaco importado de Chile sabor vainilla",
     precio: 600,
     imagen: "4tabaco-cerrito-vainilla-venta-768x768.jpg.webp",
   },
   {
+    id: 04,
     nombre: "Achalay Virginia",
     descripcion: "Fino tabaco importado de variedad Virginia blend",
     precio:750,
     imagen: "10achalay-tabaco-virginia.webp",
   },
-  
+  {
+    id: 04,
+    nombre: "Achalay Virginia",
+    descripcion: "Fino tabaco importado de variedad Virginia blend",
+    precio:750,
+    imagen: "10achalay-tabaco-virginia.webp",
+  },
+  {
+    id: 04,
+    nombre: "Achalay Virginia",
+    descripcion: "Fino tabaco importado de variedad Virginia blend",
+    precio:750,
+    imagen: "10achalay-tabaco-virginia.webp",
+  },
   
 ];
 
@@ -38,6 +59,33 @@ function agregarACarrito(e) {
 }
 
 document.addEventListener("DOMContentLoaded", crearCards);
+window.addEventListener("load", ()=>{
+  if (window.location == "../pages/galeriaProductos"){
+    return
+  }
+  else{
+    Swal.fire({
+      title: 'Sos Mayor de Edad?',
+      text: "Esta pagina es solo para Mayores de 18 años",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'No soy mayor de edad',
+      cancelButtonText:'Soy mayor de edad'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Prohibido',
+          'No podes ingresar.',
+          'error'
+        )
+        window.location.replace("https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley")
+      }
+    })
+  }
+  
+})
 
 function crearCards() {
   let contenedor = document.getElementById("productos");
@@ -87,10 +135,8 @@ let producto = {
   nombre: nombreProducto,
   precio: precioProducto,
   imagen: fotoProducto,
-
   
 }
-
 
 carrito.push(producto)
 console.log(carrito);
@@ -145,7 +191,10 @@ function vaciarCarrito(){
 carrito = [];
 let container = document.getElementById('carrito')
 container.innerHTML = ""
+let total = document.getElementById("total");
+total.innerHTML = 0;
   renderizarCarrito();
+
   
 }
 

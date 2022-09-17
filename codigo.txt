@@ -1,0 +1,11 @@
+ DOMcarrito.textContent = '';
+  const carritoSinDuplicados = [...new set (carrito)];
+  carritoSinDuplicados.forEach((item) =>{
+    const miItem = baseDeDatos.filter((itemBaseDatos) =>{
+      return itemBaseDatos.id === parseInt(item);
+    });
+    const numeroUnidadesItem = carrito.reduce((total, itemId) =>{
+      return itemId === item ? total += : total;
+    }, 0);
+    const miNodo = document.createElement(li)
+  }
