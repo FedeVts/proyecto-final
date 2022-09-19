@@ -176,6 +176,7 @@ const DOMitems = document.querySelector('#items');
 const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
 let DOMbotonVaciar = document.querySelector('#boton-vaciar');
+let DOMbotonComprar = document.querySelector('#boton-comprar');
 console.log(DOMbotonVaciar);
 
 let storage = localStorage.setItem('listaProductos', JSON.stringify(carrito))
@@ -186,6 +187,8 @@ let storage = localStorage.setItem('listaProductos', JSON.stringify(carrito))
 // renderizarProductos();
 renderizarCarrito();
 DOMbotonVaciar.addEventListener('click', vaciarCarrito);
+DOMbotonComprar.addEventListener('click', comprarProducto ) //no funciona le falta una function que no se que ponerle
+
 
 function vaciarCarrito(){
 carrito = [];
@@ -196,6 +199,11 @@ total.innerHTML = 0;
   renderizarCarrito();
 
   
+}
+
+function comprarProducto(e){
+
+
 }
 
 
