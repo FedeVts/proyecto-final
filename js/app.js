@@ -12,7 +12,7 @@ const listaProductos = [
     id: 02,
     nombre: "Flandria Virginia",
     descripcion: "Fino tabaco de origen Belga del tipo Virginia Blend",
-    precio: 700,
+    precio: 890,
     imagen: "2flandria-silver-tabaco-precios.jpg",
   },
   {
@@ -34,21 +34,21 @@ const listaProductos = [
     id: 05,
     nombre: "Saint Natural",
     descripcion:"tabaco Virginia y tabaco Burley sin aditivos y con el sabor natural al tabaco.",
-    precio: 750,
+    precio: 900,
     imagen: "5saints-tabaco-natural-precio.jpg",
   },
   {
     id: 06,
     nombre: "Don Jose Dark",
     descripcion: "Tabaco importado de Mexico variedad Dark black",
-    precio: 750,
+    precio: 680,
     imagen: "6tabaco-don-jose-precio.jpg",
   },
   {
     id: 07,
     nombre: "Sairy Natural",
     descripcion: "Fino tabaco importado de variedad Virginia blend",
-    precio: 750,
+    precio: 1020,
     imagen: "7Tabaco-Sayri-tabaqueria-online-pop.webp",
   },
   {
@@ -60,27 +60,34 @@ const listaProductos = [
   },
   {
     id: 09,
-    nombre: "Sairy Natural",
-    descripcion: "Fino tabaco importado de variedad Virginia blend",
-    precio: 750,
-    imagen: "7Tabaco-Sayri-tabaqueria-online-pop.webp",
+    nombre: "Argento Natural",
+    descripcion: "Tabaco Argento Natural sin conservantes",
+    precio: 800,
+    imagen: "tabaco-argento-natural-precio-1.jpg",
   },
   {
     id: 10,
-    nombre: "Sairy Natural",
-    descripcion: "Fino tabaco importado de variedad Virginia blend",
-    precio: 750,
-    imagen: "7Tabaco-Sayri-tabaqueria-online-pop.webp",
+    nombre: "Argento Chocolate",
+    descripcion: "Tabaco Argento Saborizado Chocolate",
+    precio: 800,
+    imagen: "12tabaco-argento-chocolate-venta.jpg",
   },
   {
     id: 11,
-    nombre: "Sairy Natural",
-    descripcion: "Fino tabaco importado de variedad Virginia blend",
-    precio: 750,
-    imagen: "7Tabaco-Sayri-tabaqueria-online-pop.webp",
+    nombre: "Arlequin piña colada",
+    descripcion: "Tabaco marca Arlequin saborizado piña colada",
+    precio: 830,
+    imagen: "11tabaco-arlequin-pina-colada-venta.jpg",
+  },
+  {
+    id: 11,
+    nombre: "Arlequin Choco Mint",
+    descripcion: "Tabaco marca Arlequin saborizado chocolate y menta",
+    precio: 830,
+    imagen: "tabaco-arlequin-chocomint-precios-mayoristas.jpg",
+    
   },
   
-
 ];
 
 // const botonCarrito = document.getElementsByClassName("botonCarrito");
