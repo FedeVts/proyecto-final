@@ -116,7 +116,7 @@ window.addEventListener("load", () => {
       if (result.isConfirmed) {
         Swal.fire("Prohibido", "No podes ingresar.", "error");
         window.location.replace(
-          "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+          "https://www.youtube.com/watch?v=mvcyruqSqr8&ab_channel=UrielGuzman"
         );
       }
     });
@@ -142,8 +142,8 @@ function crearCards() {
     </p>
     <span class="d-block text-center"><strong> ${p.precio}</strong></span>
     <br>
-    <button name="botonCarrito" type="button" class="btn btn-primary btn-lg botonCarrito">
-    Agregar a Carrito
+    <button name="botonCarrito" type="button" class="btn btn-primary btn-lg botonCarrito d-grid gap-2 col-6 mx-auto">
+    Agregar
     </button>
     </div>
     
@@ -239,6 +239,55 @@ function comprarProducto(e) {
     }
   });
 }
+
+class Formulario{
+constructor(nombre, email, mensaje){
+  this.nombre = nombre;
+  this.email = email;
+  this.mensaje = mensaje;
+}
+}
+
+let nombre = [];
+let email = [];
+let mensaje = [];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //     console.log("EL EVENTO ESTA EN:" , e.target);
 
