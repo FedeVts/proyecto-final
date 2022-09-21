@@ -80,7 +80,7 @@ const listaProductos = [
     imagen: "11tabaco-arlequin-pina-colada-venta.jpg",
   },
   {
-    id: 11,
+    id: 12,
     nombre: "Arlequin Choco Mint",
     descripcion: "Tabaco marca Arlequin saborizado chocolate y menta",
     precio: 830,
@@ -222,6 +222,29 @@ function vaciarCarrito() {
   total.innerHTML = 0;
   renderizarCarrito();
 }
+// NO FUNCIONA
+let mismoProducto = carrito.some(
+  (p) => p.nombre === nombreProducto.nombre
+);
+if(mismoProducto){
+  let producto = carrito.map((p) => {
+    if (p.nombre === producto.nombre){
+      p.cantidad++;
+      return p;
+    }else{
+    return p;
+    }
+  });
+  
+  carrito = [...producto];
+  }else{
+    carrito = [...carrito, producto];
+  }
+  let tabla = document.getElementById("tbody");
+  tabla.innerHTML = "";
+  mostrarCarrito(carrito);
+
+
 
 function comprarProducto(e) {
   Swal.fire({
@@ -232,6 +255,7 @@ function comprarProducto(e) {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Si, confirmar compra",
+    cancelButtonText:"Cancelar"
   }).then((result) => {
     if (result.isConfirmed) {
       vaciarCarrito();
@@ -246,8 +270,12 @@ constructor(nombre, email, mensaje){
   this.email = email;
   this.mensaje = mensaje;
 }
-}
 
+}
+ window.addEventListener("submit", ()=>{
+
+  
+ })
 let nombre = [];
 let email = [];
 let mensaje = [];
