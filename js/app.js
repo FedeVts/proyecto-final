@@ -25,7 +25,7 @@ const listaProductos = [
   {
     id: 04,
     nombre: "Achalay Virginia",
-    descripcion: "Fino tabaco importado de variedad Virginia blend",
+    descripcion: "Fino tabaco importado de variedad Virginia Blend",
     precio: 750,
     imagen: "10achalay-tabaco-virginia.webp",
   },
@@ -33,7 +33,8 @@ const listaProductos = [
   {
     id: 05,
     nombre: "Saint Natural",
-    descripcion:"tabaco Virginia y tabaco Burley sin aditivos y con el sabor natural al tabaco.",
+    descripcion:
+      "tabaco Virginia y tabaco Burley sin aditivos y con el sabor natural al tabaco.",
     precio: 900,
     imagen: "5saints-tabaco-natural-precio.jpg",
   },
@@ -85,9 +86,7 @@ const listaProductos = [
     descripcion: "Tabaco marca Arlequin saborizado chocolate y menta",
     precio: 830,
     imagen: "tabaco-arlequin-chocomint-precios-mayoristas.jpg",
-    
   },
-  
 ];
 
 // const botonCarrito = document.getElementsByClassName("botonCarrito");
@@ -97,10 +96,12 @@ function agregarACarrito(e) {
   localStorage.setItem("carrito", "cantidad");
   console.log(e.target);
 }
+if(window.location.pathname.includes("carrito.html")){
+  document.addEventListener("DOMContentLoaded", crearCards);
 
-document.addEventListener("DOMContentLoaded", crearCards);
+}
 window.addEventListener("load", () => {
-  if (window.location == "../pages/galeriaProductos") {
+  if (window.location.pathname.includes("carrito.html")) {
     return;
   } else {
     Swal.fire({
@@ -123,62 +124,86 @@ window.addEventListener("load", () => {
   }
 });
 
-function crearCards() {
-  let contenedor = document.getElementById("productos");
-  for (let p of listaProductos) {
-    let card = document.createElement("div");
-
-    card.innerHTML = `
-    <img
-    src="../assets/img-productos/${p.imagen}"
-    class="card-img-top"
-    alt="..."
-    />
-    <div class="card-body">
-    <p class="card-text">
-    <h5 class="d-block text-center">${p.nombre}</h5>
-    <br>
-    ${p.descripcion}
-    </p>
-    <span class="d-block text-center"><strong> ${p.precio}</strong></span>
-    <br>
-    <button name="botonCarrito" type="button" class="btn btn-primary btn-lg botonCarrito d-grid gap-2 col-6 mx-auto">
-    Agregar
-    </button>
-    </div>
-    
-    `;
-    card.className = "card mb-3 col mx-4";
-
-    let btn_compra = document.getElementsByClassName("botonCarrito");
-    console.log(btn_compra);
-    contenedor.append(card);
-    for (let boton of btn_compra) {
-      console.log(boton);
-
-      boton.addEventListener("click", agregarCarrito);
+  function crearCards() {
+    let contenedor = document.getElementById("productos");
+    for (let p of listaProductos) {
+      let card = document.createElement("div");
+  
+      card.innerHTML = `
+      <img
+      src="../assets/img-productos/${p.imagen}"
+      class="card-img-top"
+      alt="..."
+      />
+      <div class="card-body">
+      <p class="card-text">
+      <h5 class="d-block text-center">${p.nombre}</h5>
+      <br>
+      ${p.descripcion}
+      </p>
+      <span class="d-block text-center"><strong> ${p.precio}</strong></span>
+      <br>
+      <button name="botonCarrito" type="button" class="btn btn-primary btn-lg botonCarrito d-grid gap-2 col-6 mx-auto">
+      Agregar
+      </button>
+      </div>
+      
+      `;
+      card.className = "card mb-3 col mx-4";
+  
+      let btn_compra = document.getElementsByClassName("botonCarrito");
+      console.log(btn_compra);
+      contenedor.append(card);
+      for (let boton of btn_compra) {
+        console.log(boton);
+  
+        boton.addEventListener("click", agregarCarrito);
+      }
     }
   }
-}
+
+
+
 
 function agregarCarrito(e) {
   let marcador = e.target.parentNode;
   let nombreProducto = marcador.querySelector("h5").textContent;
   let precioProducto = parseInt(marcador.querySelector("span").textContent);
   let fotoProducto = marcador.parentNode.querySelector("img").src;
+  
   let producto = {
     nombre: nombreProducto,
     precio: precioProducto,
     imagen: fotoProducto,
+    cantidad: 1,
   };
+  
+  let mismoProducto = carrito.some((p) => p.nombre === nombreProducto.nombre);
+  if (mismoProducto) {
+    let producto_ = carrito.map((p) => {
+      if (p.nombre === producto.nombre) {
+        p.cantidad++;
+        return p;
+      } else {
+        return p;
+      }
+    });
+  
+    carrito = [...producto_];
+  } else {
+    carrito = [...carrito, producto];
+  }
+  let tabla = document.getElementById("carrito");
+  tabla.innerHTML = "";
 
-  carrito.push(producto);
-  console.log(carrito);
 
-  renderizarCarrito();
+  renderizarCarrito(carrito);
+  
+  
+  
 }
 
-function renderizarCarrito(e) {
+function renderizarCarrito(carrito) {
   let container = document.getElementById("carrito");
   let card = document.createElement("div");
   for (let p of carrito) {
@@ -186,7 +211,8 @@ function renderizarCarrito(e) {
     card.innerHTML = `
     <img class="card-img-top" src="${p.imagen}"></img>
     <li>${p.nombre}</li>
-    <li>Precio: $<p class="precio-producto">${p.precio}</p></li>`;
+    <li>Precio: $<p class="precio-producto">${p.precio}</p></li>
+    <span>${p.cantidad}</span>`;
     container.append(card);
     let total = document.getElementById("total");
     let precios = document.getElementsByClassName("precio-producto");
@@ -210,9 +236,12 @@ console.log(DOMbotonVaciar);
 let storage = localStorage.setItem("listaProductos", JSON.stringify(carrito));
 
 // renderizarProductos();
-renderizarCarrito();
-DOMbotonVaciar.addEventListener("click", vaciarCarrito);
-DOMbotonComprar.addEventListener("click", comprarProducto); //no funciona le falta una function que no se que ponerle
+renderizarCarrito(carrito);
+if(window.location.pathname.includes('carrito.html')){
+
+  DOMbotonVaciar.addEventListener("click", vaciarCarrito);
+  DOMbotonComprar.addEventListener("click", comprarProducto); //no funciona le falta una function que no se que ponerle
+}
 
 function vaciarCarrito() {
   carrito = [];
@@ -223,26 +252,6 @@ function vaciarCarrito() {
   renderizarCarrito();
 }
 // NO FUNCIONA
-let mismoProducto = carrito.some(
-  (p) => p.nombre === nombreProducto.nombre
-);
-if(mismoProducto){
-  let producto = carrito.map((p) => {
-    if (p.nombre === producto.nombre){
-      p.cantidad++;
-      return p;
-    }else{
-    return p;
-    }
-  });
-  
-  carrito = [...producto];
-  }else{
-    carrito = [...carrito, producto];
-  }
-  let tabla = document.getElementById("tbody");
-  tabla.innerHTML = "";
-  mostrarCarrito(carrito);
 
 
 
@@ -255,7 +264,7 @@ function comprarProducto(e) {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Si, confirmar compra",
-    cancelButtonText:"Cancelar"
+    cancelButtonText: "Cancelar",
   }).then((result) => {
     if (result.isConfirmed) {
       vaciarCarrito();
@@ -264,18 +273,14 @@ function comprarProducto(e) {
   });
 }
 
-class Formulario{
-constructor(nombre, email, mensaje){
-  this.nombre = nombre;
-  this.email = email;
-  this.mensaje = mensaje;
+class Formulario {
+  constructor(nombre, email, mensaje) {
+    this.nombre = nombre;
+    this.email = email;
+    this.mensaje = mensaje;
+  }
 }
-
-}
- window.addEventListener("submit", ()=>{
-
-  
- })
+window.addEventListener("submit", () => {});
 let nombre = [];
 let email = [];
 let mensaje = [];
@@ -283,39 +288,66 @@ let mensaje = [];
 
 
 
+// API CLIMA
+const API_KEY = 'ffd2e62b9e1ad6af1732fea1b6c786f9';
+
+
+
+  const fetchData = position => {
+    const{latitude, longitude} = position.coords;
+    fetch(`https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
+    .then(response => response.json())
+    .then(data => setWeatherData(data))
+  }
+    const setWeatherData = data =>{
+      console.log(data);
+      const weatherData = {
+          location: data.name,
+          description: data.weather[0].main,
+          humidity: data.main.humidity,
+          pressure: data.main.pressure,
+          temperature: data.main.temp,
+          temp_max: data.main.temp_max,
+          temp_min: data.main.temp_min,
+          date: getDate(),
+          
+      }
+  
+      Object.keys(weatherData).forEach( key => {
+        
+          document.getElementById(key).textContent = weatherData[key];
+          
+      });
+      
+      
+  }
+  const getDate = () => {
+      let date = new Date();
+      return`${date.getDate()}-${ ('0' + (date.getMonth() +1)).slice(-2)}-${date.getFullYear()}`;
+  }
+  
+   
+    
+  const onLoad = () =>{
+      navigator.geolocation.getCurrentPosition(fetchData);
+  }
 
 
 
 
 
+// // API DE CLIMA
+// const API_KEY = 'ffd2e62b9e1ad6af1732fea1b6c786f9'
 
+// const fetchData = position => {
+//   const{latitude, longitude} = position.coords;
+//   fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
+//   .then(response => response.json())
+//   .then(data => console.log(data))
 
+//   console.log(position);}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// const onLoad = () =>{navigator.geolocation.getCurrentPosition(log);}
 
 //     console.log("EL EVENTO ESTA EN:" , e.target);
 
