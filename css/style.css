@@ -1,6 +1,44 @@
+.container-fluid {
+  background-color: 0; }
+
+.contenedorApic {
+  background-color: skyblue;
+  display: flex;
+  justify-content: center;
+  margin: 100px;
+  text-align: center; }
+  .contenedorApic .bloques {
+    background-color: #0d6efd;
+    text-align: center;
+    border-radius: 10px; }
+
+.informacionContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center; }
+
+#location {
+  font-weight: bold; }
+
+#tempMax {
+  color: red;
+  font-weight: bold; }
+
+.carrito-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 4em; }
+  .carrito-container img {
+    width: 6em;
+    height: 6em; }
+
 container-fluid {
-  background-color: 0;
-}
+  background-color: 0; }
 
 .carrito-container {
   display: flex;
@@ -8,12 +46,11 @@ container-fluid {
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  height: 4em;
-}
+  height: 4em; }
+
 .carrito-container img {
   width: 6em;
-  height: 6em;
-}
+  height: 6em; }
 
 .carrito-container {
   display: flex;
@@ -21,12 +58,11 @@ container-fluid {
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  height: 4em;
-}
+  height: 4em; }
+
 .carrito-container img {
   width: 6em;
-  height: 6em;
-}
+  height: 6em; }
 
 .container-container {
   display: grid;
@@ -34,11 +70,7 @@ container-fluid {
   grid-template-rows: 1fr 1fr 1fr;
   gap: 10px 10px;
   align-items: center;
-  grid-template-areas:
-    ". . . ."
-    ". . . ."
-    ". . . .";
-}
+  grid-template-areas: ". . . ." ". . . ." ". . . ."; }
 
 @media (max-width: 768px) {
   .container-container {
@@ -47,12 +79,7 @@ container-fluid {
     grid-template-rows: 1fr 1fr 1fr;
     gap: 10px 10px;
     align-items: center;
-    grid-template-areas:
-      ". . ."
-      ". . ."
-      ". . .";
-  }
-}
+    grid-template-areas: ". . ." ". . ." ". . ."; } }
 
 @media (max-width: 600px) {
   .container-container {
@@ -61,12 +88,7 @@ container-fluid {
     grid-template-rows: 1fr 1fr;
     gap: 10px 10px;
     align-items: center;
-    grid-template-areas:
-      ". . "
-      ". . "
-      ". . ";
-  }
-}
+    grid-template-areas: ". . " ". . " ". . "; } }
 
 .container-fluid {
   background-color: 0; }
@@ -78,9 +100,10 @@ container-fluid {
   align-items: center;
   width: 100%;
   height: 4em; }
-  .carrito-container img {
-    width: 6em;
-    height: 6em; }
+
+.carrito-container img {
+  width: 6em;
+  height: 6em; }
 
 .carrito-container {
   display: flex;
@@ -89,13 +112,7 @@ container-fluid {
   align-items: center;
   width: 100%;
   height: 4em; }
-  .carrito-container img {
-    width: 6em;
-    height: 6em; }
 
-.contenedorApic {
-  background-color: skyblue;
-  display: flex;
-  justify-content: center; }
-  .contenedorApic .bloques {
-    background-color: #0d6efd; }
+.carrito-container img {
+  width: 6em;
+  height: 6em; }
