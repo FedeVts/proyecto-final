@@ -295,7 +295,7 @@ const API_KEY = 'ffd2e62b9e1ad6af1732fea1b6c786f9';
 
   const fetchData = position => {
     const{latitude, longitude} = position.coords;
-    fetch(`https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${latitude}&lon=${longitude}&lang=es&appid=${API_KEY}`)
     .then(response => response.json())
     .then(data => setWeatherData(data))
   }
@@ -307,8 +307,8 @@ const API_KEY = 'ffd2e62b9e1ad6af1732fea1b6c786f9';
           humidity: data.main.humidity,
           pressure: data.main.pressure,
           temperature: data.main.temp,
-          temp_max: data.main.temp_max,
-          temp_min: data.main.temp_min,
+          tempMax: data.main.temp_max,
+          tempMin: data.main.temp_min,
           date: getDate(),
           
       }
@@ -319,7 +319,12 @@ const API_KEY = 'ffd2e62b9e1ad6af1732fea1b6c786f9';
           
       });
       
-      
+      const cleanUp = () => {
+        let contenedorApi = document.getElementById('contenedorApi')
+        let loader = document.getElementById('loader');
+        loader.style.display = 'none'
+        contenedorApi.style.display = 'flex';
+      }
   }
   const getDate = () => {
       let date = new Date();
