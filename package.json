@@ -19,8 +19,9 @@
   },
   "homepage": "https://github.com/FedeVts/proyecto-final#readme",
   "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
     "node-sass": "^7.0.3",
     "nodemon": "^2.0.19"
-  },
-  "devDependencies": {}
+  }
 }
