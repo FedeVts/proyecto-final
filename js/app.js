@@ -1,4 +1,5 @@
 
+
 let carrito = [];
 
 const listaProductos = [
@@ -90,12 +91,11 @@ const listaProductos = [
   },
 ];
 
-// const botonCarrito = document.getElementsByClassName("botonCarrito");
-// console.log(botonCarrito);
+
 
 function agregarACarrito(e) {
   localStorage.setItem("carrito", "cantidad");
-  console.log(e.target);
+  
 }
 if(window.location.pathname.includes("carrito.html")){
   document.addEventListener("DOMContentLoaded", crearCards);
@@ -153,10 +153,10 @@ window.addEventListener("load", () => {
       card.className = "card mb-3 col mx-4";
   
       let btn_compra = document.getElementsByClassName("botonCarrito");
-      console.log(btn_compra);
+      
       contenedor.append(card);
       for (let boton of btn_compra) {
-        console.log(boton);
+        
   
         boton.addEventListener("click", agregarCarrito);
       }
@@ -179,8 +179,10 @@ function agregarCarrito(e) {
     cantidad: 1,
   };
   
-  let mismoProducto = carrito.some((p) => p.nombre === nombreProducto.nombre);
-  if (mismoProducto) {
+  let mismoProducto = carrito.some((p) => p.nombre === nombreProducto);
+  if ( !mismoProducto) {
+    carrito = [...carrito, producto];
+  } else {
     let producto_ = carrito.map((p) => {
       if (p.nombre === producto.nombre) {
         p.cantidad++;
@@ -191,8 +193,6 @@ function agregarCarrito(e) {
     });
   
     carrito = [...producto_];
-  } else {
-    carrito = [...carrito, producto];
   }
   let tabla = document.getElementById("carrito");
   tabla.innerHTML = "";
@@ -206,33 +206,49 @@ function agregarCarrito(e) {
 
 function renderizarCarrito(carrito) {
   let container = document.getElementById("carrito");
-  let card = document.createElement("div");
+  
   for (let p of carrito) {
+    let card = document.createElement("li");
     card.classList.add("carrito-container");
-    card.innerHTML = `
+    card.innerHTML =`
     <img class="card-img-top" src="${p.imagen}"></img>
     <li>${p.nombre}</li>
-    <li>Precio: $<p class="precio-producto">${p.precio}</p></li>
+    <li>Precio: $<p class="precio-producto">${p.precio * p.cantidad}</p></li>
+    <button class="borrarP">Borrar</button>
     <span>${p.cantidad}</span>`;
-    container.append(card);
+    container.appendChild(card)
     let total = document.getElementById("total");
     let precios = document.getElementsByClassName("precio-producto");
     let sumaTotal = 0;
-
+    let botonesBorrar = container.querySelector(".borrarP")
+    botonesBorrar.addEventListener('click' , borrar_unidad)
     for (let precio of precios) {
       sumaTotal += parseInt(precio.innerText);
       total.innerHTML = `${sumaTotal}`;
     }
   }
 }
-
+function borrar_unidad(e) {
+  for(let p of carrito){
+    if (p.cantidad > 1){
+      p.cantidad--
+      let container = document.getElementById("carrito");
+      container.innerHTML=""
+      renderizarCarrito(carrito)
+    }
+    else if(p.cantidad=== 1){
+      let target = e.target.parentNode
+      target.remove()
+    }
+  }
+}
 const divisa = "$";
 const DOMitems = document.querySelector("#items");
 const DOMcarrito = document.querySelector("#carrito");
 const DOMtotal = document.querySelector("#total");
 let DOMbotonVaciar = document.querySelector("#boton-vaciar");
 let DOMbotonComprar = document.querySelector("#boton-comprar");
-console.log(DOMbotonVaciar);
+
 
 let storage = localStorage.setItem("listaProductos", JSON.stringify(carrito));
 
@@ -301,7 +317,7 @@ const API_KEY = 'ffd2e62b9e1ad6af1732fea1b6c786f9';
     .then(data => setWeatherData(data))
   }
     const setWeatherData = data =>{
-      console.log(data);
+      
       const weatherData = {
           location: data.name,
           description: data.weather[0].main,
