@@ -212,7 +212,7 @@ function renderizarCarrito(carrito) {
     card.classList.add("carrito-container");
     card.innerHTML =`
     <img class="card-img-top" src="${p.imagen}"></img>
-    <li>${p.nombre}</li>
+    <li class="nombre_producto">${p.nombre}</li>
     <li>Precio: $<p class="precio-producto">${p.precio * p.cantidad}</p></li>
     <button class="borrarP">Borrar</button>
     <span>${p.cantidad}</span>`;
@@ -229,17 +229,10 @@ function renderizarCarrito(carrito) {
   }
 }
 function borrar_unidad(e) {
-  for(let p of carrito){
-    if (p.cantidad > 1){
-      p.cantidad--
-      let container = document.getElementById("carrito");
-      container.innerHTML=""
-      renderizarCarrito(carrito)
-    }
-    else if(p.cantidad=== 1){
-      let target = e.target.parentNode
-      target.remove()
-    }
+  let nombresProductos = document.getElementsByClassName("nombre_producto")
+  for (let nombre of nombresProductos){
+   let carritoFiltrado = carrito.filter((e)=>e.nombre===nombre)
+    renderizarCarrito(carritoFiltrado)
   }
 }
 const divisa = "$";
@@ -266,7 +259,7 @@ function vaciarCarrito() {
   container.innerHTML = "";
   let total = document.getElementById("total");
   total.innerHTML = 0;
-  renderizarCarrito();
+  renderizarCarrito(carrito);
 }
 // NO FUNCIONA
 
