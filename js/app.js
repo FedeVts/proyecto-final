@@ -133,7 +133,7 @@ window.addEventListener("load", () => {
       card.innerHTML = `
       <img
       src="../assets/img-productos/${p.imagen}"
-      class="card-img-top"
+      class="card-img-top m-2 mb-auto"
       alt="..."
       />
       <div class="card-body">
@@ -211,30 +211,23 @@ function renderizarCarrito(carrito) {
     let card = document.createElement("li");
     card.classList.add("carrito-container");
     card.innerHTML =`
-    <img class="card-img-top" src="${p.imagen}"></img>
+    <img class="card-img-top m-2" src="${p.imagen}"></img>
     <li class="nombre_producto">${p.nombre}</li>
-    <li>Precio: $<p class="precio-producto">${p.precio * p.cantidad}</p></li>
-    <button class="borrarP">Borrar</button>
+    <span class="d-flex justify-content-center">Precio: $<p class="precio-producto">${p.precio * p.cantidad}</p></span>
+   
     <span>${p.cantidad}</span>`;
     container.appendChild(card)
     let total = document.getElementById("total");
     let precios = document.getElementsByClassName("precio-producto");
     let sumaTotal = 0;
-    let botonesBorrar = container.querySelector(".borrarP")
-    botonesBorrar.addEventListener('click' , borrar_unidad)
+    
     for (let precio of precios) {
       sumaTotal += parseInt(precio.innerText);
       total.innerHTML = `${sumaTotal}`;
     }
   }
 }
-function borrar_unidad(e) {
-  let nombresProductos = document.getElementsByClassName("nombre_producto")
-  for (let nombre of nombresProductos){
-   let carritoFiltrado = carrito.filter((e)=>e.nombre===nombre)
-    renderizarCarrito(carritoFiltrado)
-  }
-}
+
 const divisa = "$";
 const DOMitems = document.querySelector("#items");
 const DOMcarrito = document.querySelector("#carrito");
@@ -254,10 +247,12 @@ if(window.location.pathname.includes('carrito.html')){
 }
 
 function vaciarCarrito() {
-  carrito = [];
   let container = document.getElementById("carrito");
-  container.innerHTML = "";
   let total = document.getElementById("total");
+  carrito = JSON.parse(localStorage.getItem('carrito'))
+  carrito = [];
+  localStorage.setItem('carrito', JSON.stringify(carrito))
+  container.innerHTML = "";
   total.innerHTML = 0;
   renderizarCarrito(carrito);
 }
