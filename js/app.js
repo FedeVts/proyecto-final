@@ -1,6 +1,11 @@
+let carrito;
 
+let carritoLocal = JSON.parse(localStorage.getItem("carrito"));
 
-let carrito = [];
+if (!carritoLocal) {
+  carrito = [];
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+}
 
 const listaProductos = [
   {
@@ -91,15 +96,8 @@ const listaProductos = [
   },
 ];
 
-
-
-function agregarACarrito(e) {
-  localStorage.setItem("carrito", "cantidad");
-  
-}
-if(window.location.pathname.includes("carrito.html")){
+if (window.location.pathname.includes("carrito.html")) {
   document.addEventListener("DOMContentLoaded", crearCards);
-
 }
 window.addEventListener("load", () => {
   if (window.location.pathname.includes("carrito.html")) {
@@ -125,12 +123,12 @@ window.addEventListener("load", () => {
   }
 });
 
-  function crearCards() {
-    let contenedor = document.getElementById("productos");
-    for (let p of listaProductos) {
-      let card = document.createElement("div");
-  
-      card.innerHTML = `
+function crearCards() {
+  let contenedor = document.getElementById("productos");
+  for (let p of listaProductos) {
+    let card = document.createElement("div");
+
+    card.innerHTML = `
       <img
       src="../assets/img-productos/${p.imagen}"
       class="card-img-top m-2 mb-auto"
@@ -142,7 +140,10 @@ window.addEventListener("load", () => {
       <br>
       ${p.descripcion}
       </p>
-      <span class="d-block text-center"><strong> ${p.precio}</strong></span>
+      <span class="d-block text-center"><strong> ${p.precio.toLocaleString(
+        "es-AR",
+        { style: "currency", currency: "ARS" }
+      )}</strong></span>
       <br>
       <button name="botonCarrito" type="button" class="btn btn-primary btn-lg botonCarrito d-grid gap-2 col-6 mx-auto">
       Agregar
@@ -150,37 +151,33 @@ window.addEventListener("load", () => {
       </div>
       
       `;
-      card.className = "card mb-3 col mx-4";
-  
-      let btn_compra = document.getElementsByClassName("botonCarrito");
-      
-      contenedor.append(card);
-      for (let boton of btn_compra) {
-        
-  
-        boton.addEventListener("click", agregarCarrito);
-      }
+    card.className = "card mb-3 col mx-4";
+
+    let btn_compra = document.getElementsByClassName("botonCarrito");
+
+    contenedor.append(card);
+    for (let boton of btn_compra) {
+      boton.addEventListener("click", agregarCarrito);
     }
   }
-
-
-
+}
 
 function agregarCarrito(e) {
+  carrito = JSON.parse(localStorage.getItem("carrito"));
   let marcador = e.target.parentNode;
   let nombreProducto = marcador.querySelector("h5").textContent;
-  let precioProducto = parseInt(marcador.querySelector("span").textContent);
+  let precioProducto = marcador.querySelector("span").textContent;
   let fotoProducto = marcador.parentNode.querySelector("img").src;
-  
+
   let producto = {
     nombre: nombreProducto,
     precio: precioProducto,
     imagen: fotoProducto,
     cantidad: 1,
   };
-  
+
   let mismoProducto = carrito.some((p) => p.nombre === nombreProducto);
-  if ( !mismoProducto) {
+  if (!mismoProducto) {
     carrito = [...carrito, producto];
   } else {
     let producto_ = carrito.map((p) => {
@@ -191,42 +188,106 @@ function agregarCarrito(e) {
         return p;
       }
     });
-  
+
     carrito = [...producto_];
   }
+
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+
   let tabla = document.getElementById("carrito");
   tabla.innerHTML = "";
 
-
   renderizarCarrito(carrito);
-  
-  
-  
 }
 
 function renderizarCarrito(carrito) {
   let container = document.getElementById("carrito");
-  
+
   for (let p of carrito) {
+    let precio = p.precio
+      ? parseInt(
+          p.precio
+            .split("")
+            .filter((simbolo) => simbolo !== "$")
+            .join("")
+        )
+      : "";
+
     let card = document.createElement("li");
     card.classList.add("carrito-container");
-    card.innerHTML =`
+    card.innerHTML = `
     <img class="card-img-top m-2" src="${p.imagen}"></img>
     <li class="nombre_producto">${p.nombre}</li>
-    <span class="d-flex justify-content-center">Precio: $<p class="precio-producto">${p.precio * p.cantidad}</p></span>
+    <button class='borrarP'>Borrar</button>
+    <span class="d-flex justify-content-center">Precio: $<p class="precio-producto">${
+      precio * p.cantidad
+    }</p></span>
    
     <span>${p.cantidad}</span>`;
-    container.appendChild(card)
-    let total = document.getElementById("total");
-    let precios = document.getElementsByClassName("precio-producto");
-    let sumaTotal = 0;
-    
-    for (let precio of precios) {
-      sumaTotal += parseInt(precio.innerText);
-      total.innerHTML = `${sumaTotal}`;
+    container.appendChild(card);
+    let botonesBorrar = document.getElementsByClassName("borrarP");
+    for (let btn of botonesBorrar) {
+      btn.addEventListener("click", borrar_unidad);
     }
+
+    calcular_total();
   }
 }
+
+const calcular_total = () => {
+  let total = document.getElementById("total");
+  let precios = document.getElementsByClassName("precio-producto");
+  let sumaTotal = 0;
+
+  for (let precio of precios) {
+    sumaTotal += parseInt(precio.innerText);
+    total.innerHTML = `${sumaTotal}`;
+  }
+};
+
+const borrar_unidad = (e) => {
+  let target = e.target.parentNode;
+  let nombres = e.target.parentNode.getElementsByTagName("li");
+  let container = document.getElementById("carrito");
+
+  for (let p of carrito) {
+    for (let nombre of nombres) {
+      if (p.cantidad > 1 && p.nombre === nombre.innerText) {
+        p.cantidad--;
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        container.innerHTML = "";
+        carrito = JSON.parse(localStorage.getItem("carrito"));
+        calcular_total();
+        renderizarCarrito(carrito);
+      } else if (
+        carrito.length === 1 &&
+        p.cantidad === 1 &&
+        p.nombre === nombre.innerText
+      ) {
+        target.remove();
+        carrito = JSON.parse(localStorage.getItem("carrito"));
+        carrito = carrito.filter((e) => e.nombre !== nombre.innerText);
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        container.innerHTML = "";
+        carrito = JSON.parse(localStorage.getItem("carrito"));
+        renderizarCarrito(carrito);
+        let total = document.getElementById("total");
+        let sumaTotal = 0;
+        total.innerHTML = `${sumaTotal}`;
+        return carrito;
+      } else if (p.cantidad === 1 && p.nombre === nombre.innerText) {
+        target.remove();
+        carrito = JSON.parse(localStorage.getItem("carrito"));
+        carrito = carrito.filter((e) => e.nombre !== nombre.innerText);
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        container.innerHTML = "";
+        carrito = JSON.parse(localStorage.getItem("carrito"));
+        renderizarCarrito(carrito);
+        return carrito;
+      }
+    }
+  }
+};
 
 const divisa = "$";
 const DOMitems = document.querySelector("#items");
@@ -235,13 +296,7 @@ const DOMtotal = document.querySelector("#total");
 let DOMbotonVaciar = document.querySelector("#boton-vaciar");
 let DOMbotonComprar = document.querySelector("#boton-comprar");
 
-
-let storage = localStorage.setItem("listaProductos", JSON.stringify(carrito));
-
-// renderizarProductos();
-renderizarCarrito(carrito);
-if(window.location.pathname.includes('carrito.html')){
-
+if (window.location.pathname.includes("carrito.html")) {
   DOMbotonVaciar.addEventListener("click", vaciarCarrito);
   DOMbotonComprar.addEventListener("click", comprarProducto); //no funciona le falta una function que no se que ponerle
 }
@@ -249,16 +304,14 @@ if(window.location.pathname.includes('carrito.html')){
 function vaciarCarrito() {
   let container = document.getElementById("carrito");
   let total = document.getElementById("total");
-  carrito = JSON.parse(localStorage.getItem('carrito'))
+  carrito = JSON.parse(localStorage.getItem("carrito"));
   carrito = [];
-  localStorage.setItem('carrito', JSON.stringify(carrito))
+  localStorage.setItem("carrito", JSON.stringify(carrito));
   container.innerHTML = "";
   total.innerHTML = 0;
   renderizarCarrito(carrito);
 }
 // NO FUNCIONA
-
-
 
 function comprarProducto(e) {
   Swal.fire({
@@ -290,106 +343,58 @@ let nombre = [];
 let email = [];
 let mensaje = [];
 
-
-
-
 // API CLIMA
-const API_KEY = 'ffd2e62b9e1ad6af1732fea1b6c786f9';
+const API_KEY = "ffd2e62b9e1ad6af1732fea1b6c786f9";
 
+const fetchData = (position) => {
+  const { latitude, longitude } = position.coords;
+  fetch(
+    `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${latitude}&lon=${longitude}&lang=es&appid=${API_KEY}`
+  )
+    .then((response) => response.json())
+    .then((data) => setWeatherData(data));
+};
+const setWeatherData = (data) => {
+  const weatherData = {
+    location: data.name,
+    description: data.weather[0].main,
+    humidity: data.main.humidity,
+    pressure: data.main.pressure,
+    temperature: data.main.temp,
+    tempMax: data.main.temp_max,
+    tempMin: data.main.temp_min,
+    date: getDate(),
+  };
 
+  Object.keys(weatherData).forEach((key) => {
+    document.getElementById(key).textContent = weatherData[key];
+  });
 
-  const fetchData = position => {
-    const{latitude, longitude} = position.coords;
-    fetch(`https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${latitude}&lon=${longitude}&lang=es&appid=${API_KEY}`)
-    .then(response => response.json())
-    .then(data => setWeatherData(data))
+  const cleanUp = () => {
+    let contenedorApi = document.getElementById("contenedorApi");
+    let loader = document.getElementById("loader");
+    loader.style.display = "none";
+    contenedorApi.style.display = "flex";
+  };
+};
+const getDate = () => {
+  let date = new Date();
+  return `${date.getDate()}-${("0" + (date.getMonth() + 1)).slice(
+    -2
+  )}-${date.getFullYear()}`;
+};
+
+const onLoad = () => {
+  navigator.geolocation.getCurrentPosition(fetchData);
+};
+
+function cargar_carrito_storage() {
+  carrito = JSON.parse(localStorage.getItem("carrito"));
+  renderizarCarrito(carrito);
+}
+
+if (window.location.pathname.includes("carrito.html")) {
+  if (carritoLocal !== 0) {
+    cargar_carrito_storage();
   }
-    const setWeatherData = data =>{
-      
-      const weatherData = {
-          location: data.name,
-          description: data.weather[0].main,
-          humidity: data.main.humidity,
-          pressure: data.main.pressure,
-          temperature: data.main.temp,
-          tempMax: data.main.temp_max,
-          tempMin: data.main.temp_min,
-          date: getDate(),
-          
-      }
-  
-      Object.keys(weatherData).forEach( key => {
-        
-          document.getElementById(key).textContent = weatherData[key];
-          
-      });
-      
-      const cleanUp = () => {
-        let contenedorApi = document.getElementById('contenedorApi')
-        let loader = document.getElementById('loader');
-        loader.style.display = 'none'
-        contenedorApi.style.display = 'flex';
-      }
-  }
-  const getDate = () => {
-      let date = new Date();
-      return`${date.getDate()}-${ ('0' + (date.getMonth() +1)).slice(-2)}-${date.getFullYear()}`;
-  }
-  
-   
-    
-  const onLoad = () =>{
-      navigator.geolocation.getCurrentPosition(fetchData);
-  }
-
-
-
-
-
-// // API DE CLIMA
-// const API_KEY = 'ffd2e62b9e1ad6af1732fea1b6c786f9'
-
-// const fetchData = position => {
-//   const{latitude, longitude} = position.coords;
-//   fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
-//   .then(response => response.json())
-//   .then(data => console.log(data))
-
-//   console.log(position);}
-
-// const onLoad = () =>{navigator.geolocation.getCurrentPosition(log);}
-
-//     console.log("EL EVENTO ESTA EN:" , e.target);
-
-//     let hijo = e.target;
-//     let padre = hijo.parentNode;
-//     let abuelo = padre.parentNode;
-//     //console.log(padre);
-//     //console.log(abuelo);
-
-//     let nombre_producto = padre.querySelector("h5").textContent;
-
-//     let precio = padre.querySelector("span").textContent;
-//     let img = abuelo.querySelector("img").src;
-//     //console.log(nombre_producto);
-//     //console.log(precio);
-//     //console.log(img);
-
-//     let producto = {
-//         nombre:nombre_producto,
-//         img:img,
-//         precio: precio,
-//         cantidad:1
-//     };
-
-//     carrito.push(producto);
-
-//     let arreglo_JSON = JSON.stringify(carrito);
-//     localStorage.setItem("carrito" , arreglo_JSON);
-
-//     console.log( carrito);
-
-//     mostrar_carrito( producto );
-// }
-
-// botonCarrito.addEventListener("click", agregarACarrito);
+}
