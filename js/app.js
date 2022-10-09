@@ -218,7 +218,7 @@ function renderizarCarrito(carrito) {
     card.innerHTML = `
     <img class="card-img-top m-2" src="${p.imagen}"></img>
     <li class="nombre_producto">${p.nombre}</li>
-    <button class='borrarP'>Borrar</button>
+    <button class='borrarP btn btn-danger'>X</button>
     <span class="d-flex justify-content-center">Precio: $<p class="precio-producto">${
       precio * p.cantidad
     }</p></span>
